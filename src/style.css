@@ -3,14 +3,12 @@
 @theme {
 --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-/* Color: Ambre Solaire */
 --color-amberSolar-400: #FCD34D;
 --color-amberSolar-500: #FFB000;
 --color-amberSolar-600: #E09B00;
 --color-amberSolar-700: #B87F00;
 --color-amberSolar-950: #382200;
 
-/* Color: Bleu Ciel */
 --color-skyBlue-50: #F0F9FF;
 --color-skyBlue-100: #E0F2FE;
 --color-skyBlue-200: #BAE6FD;
@@ -23,7 +21,6 @@
 --color-skyBlue-900: #0C4A6E;
 --color-skyBlue-950: #082F49;
 
-/* Color: Vert Émeraude (Air / Fraîcheur) */
 --color-emeraldAura-50: #ECFDF5;
 --color-emeraldAura-100: #D1FAE5;
 --color-emeraldAura-200: #A7F3D0;
@@ -32,7 +29,6 @@
 --color-emeraldAura-600: #059669;
 --color-emeraldAura-700: #047857;
 
-/* Color: Gris Anthracite Neutre */
 --color-slateGray-50: #F8FAFC;
 --color-slateGray-100: #F1F5F9;
 --color-slateGray-200: #E2E8F0;
@@ -46,13 +42,11 @@
 --color-slateGray-950: #090D16;
 }
 
-/* Base Body Styles */
 body {
 font-family: var(--font-sans);
 background-color: var(--color-slateGray-100);
 }
 
-/* Custom Scrollbar Utility */
 .no-scrollbar::-webkit-scrollbar {
 display: none;
 }
