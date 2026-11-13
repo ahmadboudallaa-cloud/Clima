@@ -11,61 +11,22 @@
 
     <link rel="stylesheet" href="./src/style.css">
 </head>
-<body class="text-slateGray-800 antialiased min-h-screen flex flex-col md:flex-row bg-slateGray-100">
+<body class="text-slateGray-800 antialiased min-h-screen flex justify-center flex-col md:flex-row bg-slateGray-100">
 
-    <aside class="w-full md:w-64 bg-skyBlue-600 text-white flex-shrink-0 flex flex-col justify-between p-6 z-20 shadow-xl border-r border-skyBlue-700">
-        <div>
-            <div class="flex items-center gap-3 mb-10">
-                <div class="w-11 h-11 rounded-2xl bg-amberSolar-500 text-slateGray-950 flex items-center justify-center text-2xl font-black shadow-lg shadow-amberSolar-500/30">
-                    <i class="fa-solid fa-cloud-sun text-slateGray-950"></i>
-                </div>
-                <div>
-                    <span class="text-2xl font-black tracking-tight text-white block leading-none">CLIMA</span>
-                    <span class="text-[10px] font-bold tracking-widest text-skyBlue-200 uppercase">Weather Suite</span>
-                </div>
-            </div>
+   
 
-            <nav class="space-y-2">
-                <button onclick="setActiveNav(this)" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl bg-amberSolar-500 text-slateGray-950 font-bold transition-all shadow-md shadow-amberSolar-500/20">
-                    <i class="fa-solid fa-chart-pie w-5 text-center text-slateGray-950"></i>
-                    <span>Overview</span>
-                </button>
-                <button onclick="setActiveNav(this)" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-skyBlue-100 hover:text-white hover:bg-skyBlue-700 font-semibold transition-all">
-                    <i class="fa-solid fa-earth-americas w-5 text-center"></i>
-                    <span>Multi-City</span>
-                </button>
-                <button onclick="setActiveNav(this)" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-skyBlue-100 hover:text-white hover:bg-skyBlue-700 font-semibold transition-all">
-                    <i class="fa-solid fa-calendar-week w-5 text-center"></i>
-                    <span>Forecast</span>
-                </button>
-                <button onclick="setActiveNav(this)" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-skyBlue-100 hover:text-white hover:bg-skyBlue-700 font-semibold transition-all">
-                    <i class="fa-solid fa-sliders w-5 text-center"></i>
-                    <span>Settings</span>
-                </button>
-            </nav>
-        </div>
+    <main class="flex-1 flex flex-col max-w-[80%]  p-4 sm:p-6 lg:p-8 space-y-6 overflow-y-auto bg-slateGray-100">
 
-        <div class="mt-8 pt-6 border-t border-skyBlue-500/40">
-            <div class="bg-slateGray-900/40 rounded-2xl p-4 border border-skyBlue-400/30 flex items-center justify-between backdrop-blur-md">
-                <div>
-                    <p class="text-xs font-bold text-white tracking-wide">CLIMA v3.0</p>
-                    <p class="text-[11px] text-amberSolar-400 flex items-center gap-1.5 mt-0.5 font-semibold">
-                        <span class="w-2 h-2 rounded-full bg-amberSolar-500 inline-block animate-pulse"></span>
-                        Live Sky Sync
-                    </p>
-                </div>
-                <div class="w-8 h-8 rounded-xl bg-amberSolar-500/20 flex items-center justify-center">
-                    <i class="fa-solid fa-bolt text-amberSolar-400 text-sm"></i>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex flex-col min-w-0 p-4 sm:p-6 lg:p-8 space-y-6 overflow-y-auto bg-slateGray-100">
-
-        <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <header class="flex flex-col sm:flex-row sm:items-center justify-between items-center">
+           
+ 
+           
+             
+         
+            
+    
             <div>
-                <p class="text-xs font-extrabold uppercase tracking-widest text-slateGray-500 mb-0.5">Clima Weather Hub</p>
+                <p class="text-xs font-extrabold uppercase tracking-widest text-slateGray-500 mb-0.5">Clima Centre météo</p>
                 <h1 id="ville-page" class="text-2xl sm:text-3xl font-extrabold text-slateGray-900 tracking-tight">Casablanca Overview</h1>
             </div>
 
@@ -85,36 +46,55 @@
                     </button>
 
                 </div>
-                 
-               
-
-                <button class="relative p-2.5 rounded-xl border border-slateGray-200 bg-white text-slateGray-600 hover:text-skyBlue-600 transition-all shadow-sm">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-amberSolar-500 rounded-full ring-2 ring-white"></span>
-                </button>
-
-                <div class="w-10 h-10 rounded-xl bg-skyBlue-50 border border-skyBlue-200 flex items-center justify-center shadow-sm">
-                    <i class="fa-solid fa-user text-skyBlue-600"></i>
-                </div>
-            </div>
+              
         </header>
 
-        <div id="toast" class="hidden p-4 rounded-xl bg-slateGray-900 text-white text-sm shadow-xl flex items-center justify-between border border-slateGray-800">
+       
+<div id="loading" class="hidden flex justify-center items-center h-full">
+    <p class="text-slateGray-900 font-bold">Chargement des données météo...</p>
+    <div class="loader"></div>
+</div>
+
+
+<!-- Erreur -->
+<div id="errorContent" class="hidden flex justify-center items-center h-full flex-col gap-6">
+    <p id="errorMessage" class="text-red-500 font-bold">r</p>
+    <button id="btnRetry" class="bg-slateGray-900 text-amberSolar-400 rounded-xl px-3 py-2 ">Réessayer</button>
+</div>
+
+
+
+      <section id="weatherContent" class="space-y-6 overflow-y-auto  ">
+
+         <div id="toast" class="hidden p-4 rounded-xl bg-slateGray-900 text-white text-sm shadow-xl flex items-center justify-between border border-slateGray-800">
             <span id="toastMessage" class="flex items-center gap-2 font-medium">
                 <i class="fa-solid fa-circle-check text-amberSolar-500"></i>
                 Data updated successfully!
             </span>
             <button onclick="closeToast()" class="text-slateGray-400 hover:text-white ml-4"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <section class="bg-gradient-to-r from-skyBlue-600 to-skyBlue-500 rounded-3xl text-white p-6 sm:p-8 shadow-xl shadow-skyBlue-500/20 relative overflow-hidden">
-            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                
-                <div class="space-y-4">
+      <section class="bg-gradient-to-r from-skyBlue-600 to-skyBlue-500 rounded-3xl text-white p-6 sm:p-8 shadow-xl shadow-skyBlue-500/20 relative overflow-hidden">
+            <div class="flex gap-1">
                     <div class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-skyBlue-700/60 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20">
                         <i class="fa-solid fa-location-dot text-amberSolar-400"></i>
                         <span id="locationName">Ville, MOROCCO</span>
+                        
                     </div>
+                     <div class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-skyBlue-700/60 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20">
+                        <i class="fa-solid fa-calendar-days text-amberSolar-400"></i>
+                        <span id="dateName">Jeudi 14 Novembre 2026</span>
+                        
+                    </div>
+                     <div class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-skyBlue-700/60 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20">
+                        <i class="fa-solid fa-clock text-amberSolar-400"></i>
+                        <span id="hourName">10:36</span>
+                        
+                    </div>
+                    </div>
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                
+                <div class="space-y-4">
+                  
 
                     <div class="flex flex-col items-baseline gap-5">
                         <span id="mainTemp" class="text-6xl sm:text-7xl font-black tracking-tight text-amberSolar-400 drop-shadow-sm">0°C</span>
@@ -131,7 +111,7 @@
                            
                         </div>
                         <div>
-                            <p class="text-[11px] text-slateGray-400 uppercase font-extrabold tracking-wider">Range & UV</p>
+                            <p class="text-[11px] text-slateGray-400 uppercase font-extrabold tracking-wider">Portée & UV</p>
                             <p id="max-min-meteo" class="text-sm font-bold text-slate-100 mt-0.5">High: <span id="highTemp" class="text-amberSolar-400">29°</span> • Low: <span id="lowTemp" class="text-skyBlue-300">19°</span></p>
                         </div>
                     </div>
@@ -139,12 +119,12 @@
                     <div class="h-12 w-px bg-slateGray-800 hidden sm:block"></div>
 
                     <div class="flex items-center gap-6 text-xs text-slateGray-300 w-full sm:w-auto justify-between">
-                        <div class="space-y-1">
-                            <p class="text-slateGray-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-sun-plant-wilt text-amberSolar-400"></i> Sunrise</p>
+                        <div class="space-y-1 flex flex-col items-center">
+                            <p class="text-slateGray-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-sun-plant-wilt text-amberSolar-400"></i> Lever du soleil</p>
                             <p id="sunriseTime" class="font-extrabold text-white text-sm">07:02 AM</p>
                         </div>
-                        <div class="space-y-1">
-                            <p class="text-slateGray-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-moon text-skyBlue-300"></i> Sunset</p>
+                        <div class="space-y-1 flex flex-col items-center">
+                            <p class="text-slateGray-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-moon text-skyBlue-300"></i> Coucher de soleil</p>
                             <p id="sunsetTime" class="font-extrabold text-white text-sm">07:45 PM</p>
                         </div>
                     </div>
@@ -153,9 +133,9 @@
             </div>
         </section>
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section id="cartes-infos-meteo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             
-            <div class="bg-white rounded-2xl p-5 border-2 border-skyBlue-100 shadow-sm hover:border-skyBlue-400 transition-all">
+            <div id="humidity" class="bg-white rounded-2xl p-5 border-2 border-skyBlue-100 shadow-sm hover:border-skyBlue-400 transition-all">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-extrabold text-slateGray-500 uppercase tracking-wider">Humidity</span>
                     <div class="w-9 h-9 rounded-xl bg-skyBlue-50 text-skyBlue-600 flex items-center justify-center font-bold">
@@ -174,7 +154,7 @@
                 </p>
             </div>
 
-            <div class="bg-white rounded-2xl p-5 border-2 border-amberSolar-100 shadow-sm hover:border-amberSolar-400 transition-all">
+            <div id="wind" class="bg-white rounded-2xl p-5 border-2 border-amberSolar-100 shadow-sm hover:border-amberSolar-400 transition-all">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-extrabold text-slateGray-500 uppercase tracking-wider">Wind Speed</span>
                     <div class="w-9 h-9 rounded-xl bg-amberSolar-500/15 text-amberSolar-600 flex items-center justify-center font-bold">
@@ -192,26 +172,9 @@
                 </p>
             </div>
 
-            <div class="bg-white rounded-2xl p-5 border-2 border-emeraldAura-200 shadow-sm hover:border-emeraldAura-500 transition-all bg-gradient-to-b from-emeraldAura-50/30 to-transparent">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-extrabold text-emeraldAura-700 uppercase tracking-wider">Air Quality (AQI)</span>
-                    <div class="w-9 h-9 rounded-xl bg-emeraldAura-100 text-emeraldAura-600 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
-                </div>
-                <div class="flex items-baseline gap-2 mb-2">
-                    <span class="text-3xl font-black text-slateGray-900">42</span>
-                    <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-emeraldAura-100 text-emeraldAura-700 border border-emeraldAura-200">Excellent</span>
-                </div>
-                <div class="w-full bg-slateGray-100 rounded-full h-2 overflow-hidden mb-2">
-                    <div class="bg-emeraldAura-500 h-2 rounded-full" style="width: 85%"></div>
-                </div>
-                <p class="text-xs text-emeraldAura-700 font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-check text-emeraldAura-500"></i> Fresh clean air
-                </p>
-            </div>
+            
 
-            <div class="bg-white rounded-2xl p-5 border-2 border-slateGray-200 shadow-sm hover:border-skyBlue-400 transition-all">
+            <div id="hpa" class="bg-white rounded-2xl p-5 border-2 border-slateGray-200 shadow-sm hover:border-skyBlue-400 transition-all">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-extrabold text-slateGray-500 uppercase tracking-wider">Atmospheric Pressure</span>
                     <div class="w-9 h-9 rounded-xl bg-slateGray-100 text-slateGray-700 flex items-center justify-center font-bold">
@@ -230,47 +193,33 @@
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 gap-6 ">
             
             <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slateGray-200 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-5">
-                    <div>
-                        <h2 class="text-lg font-bold text-slateGray-900 tracking-tight">Hourly Outlook</h2>
-                        <p class="text-xs text-slateGray-400 font-medium">Expected weather shifts for the next 24 hours</p>
-                    </div>
-                    <span class="text-xs font-extrabold px-3 py-1.5 rounded-full bg-slateGray-100 text-slateGray-700 border border-slateGray-200">Next 24 Hours</span>
-                </div>
-
-                <div id="hourlyContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 no-scrollbar overflow-x-auto pb-2">
-                </div>
-
-                <div class="mt-4 pt-4 border-t border-slateGray-100 flex items-center justify-between text-xs text-slateGray-500">
-                    <span class="flex items-center gap-1.5 font-semibold"><i class="fa-solid fa-sun text-amberSolar-500"></i> Peak warmth expected around 2:00 PM</span>
-                    <span class="font-extrabold text-skyBlue-600 cursor-pointer hover:underline">Full Details</span>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-6 border border-slateGray-200 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-5">
                     <div>
                         <h2 class="text-lg font-bold text-slateGray-900 tracking-tight">5-Day Forecast</h2>
                         <p class="text-xs text-slateGray-400 font-medium">Extended weather trend</p>
                     </div>
-                    <i class="fa-solid fa-calendar-days text-slateGray-400"></i>
+                    <span class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-slateGray-400 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20""> Next 5 Days </span>
                 </div>
 
-                <div id="dailyContainer" class="space-y-3">
+                <div id="daysContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 no-scrollbar overflow-x-auto pb-2">
+
+                   
+
                 </div>
 
-                <div class="mt-4 pt-3 text-center border-t border-slateGray-100">
-                    <button class="text-xs font-extrabold text-skyBlue-600 hover:text-skyBlue-700 transition-colors inline-flex items-center gap-1.5">
-                        <span>14-Day Detailed Outlook</span>
-                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
+                
             </div>
 
+            
+
         </div>
+
+      </section>
+
+        
 
     </main>
 
