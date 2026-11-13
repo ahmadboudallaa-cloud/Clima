@@ -49,15 +49,31 @@
               
         </header>
 
-        <div id="toast" class="hidden p-4 rounded-xl bg-slateGray-900 text-white text-sm shadow-xl flex items-center justify-between border border-slateGray-800">
+       
+<div id="loading" class="hidden flex justify-center items-center h-full">
+    <p class="text-slateGray-900 font-bold">Chargement des données météo...</p>
+    <div class="loader"></div>
+</div>
+
+
+<!-- Erreur -->
+<div id="errorContent" class="hidden flex justify-center items-center h-full flex-col gap-6">
+    <p id="errorMessage" class="text-red-500 font-bold">r</p>
+    <button id="btnRetry" class="bg-slateGray-900 text-amberSolar-400 rounded-xl px-3 py-2 ">Réessayer</button>
+</div>
+
+
+
+      <section id="weatherContent" class="space-y-6 overflow-y-auto  ">
+
+         <div id="toast" class="hidden p-4 rounded-xl bg-slateGray-900 text-white text-sm shadow-xl flex items-center justify-between border border-slateGray-800">
             <span id="toastMessage" class="flex items-center gap-2 font-medium">
                 <i class="fa-solid fa-circle-check text-amberSolar-500"></i>
                 Data updated successfully!
             </span>
             <button onclick="closeToast()" class="text-slateGray-400 hover:text-white ml-4"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <section class="bg-gradient-to-r from-skyBlue-600 to-skyBlue-500 rounded-3xl text-white p-6 sm:p-8 shadow-xl shadow-skyBlue-500/20 relative overflow-hidden">
+      <section class="bg-gradient-to-r from-skyBlue-600 to-skyBlue-500 rounded-3xl text-white p-6 sm:p-8 shadow-xl shadow-skyBlue-500/20 relative overflow-hidden">
             <div class="flex gap-1">
                     <div class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-skyBlue-700/60 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20">
                         <i class="fa-solid fa-location-dot text-amberSolar-400"></i>
@@ -177,47 +193,33 @@
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 gap-6 ">
             
             <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slateGray-200 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-5">
-                    <div>
-                        <h2 class="text-lg font-bold text-slateGray-900 tracking-tight">Hourly Outlook</h2>
-                        <p class="text-xs text-slateGray-400 font-medium">Expected weather shifts for the next 24 hours</p>
-                    </div>
-                    <span class="text-xs font-extrabold px-3 py-1.5 rounded-full bg-slateGray-100 text-slateGray-700 border border-slateGray-200">Next 24 Hours</span>
-                </div>
-
-                <div id="hourlyContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 no-scrollbar overflow-x-auto pb-2">
-                </div>
-
-                <div class="mt-4 pt-4 border-t border-slateGray-100 flex items-center justify-between text-xs text-slateGray-500">
-                    <span class="flex items-center gap-1.5 font-semibold"><i class="fa-solid fa-sun text-amberSolar-500"></i> Peak warmth expected around 2:00 PM</span>
-                    <span class="font-extrabold text-skyBlue-600 cursor-pointer hover:underline">Full Details</span>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-6 border border-slateGray-200 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-5">
                     <div>
                         <h2 class="text-lg font-bold text-slateGray-900 tracking-tight">5-Day Forecast</h2>
                         <p class="text-xs text-slateGray-400 font-medium">Extended weather trend</p>
                     </div>
-                    <i class="fa-solid fa-calendar-days text-slateGray-400"></i>
+                    <span class="flex items-center gap-2 text-white font-extrabold text-xs uppercase tracking-widest bg-slateGray-400 backdrop-blur-md px-4 py-1.5 rounded-full w-fit border border-white/20""> Next 5 Days </span>
                 </div>
 
-                <div id="dailyContainer" class="space-y-3">
+                <div id="daysContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 no-scrollbar overflow-x-auto pb-2">
+
+                   
+
                 </div>
 
-                <div class="mt-4 pt-3 text-center border-t border-slateGray-100">
-                    <button class="text-xs font-extrabold text-skyBlue-600 hover:text-skyBlue-700 transition-colors inline-flex items-center gap-1.5">
-                        <span>14-Day Detailed Outlook</span>
-                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
+                
             </div>
 
+            
+
         </div>
+
+      </section>
+
+        
 
     </main>
 

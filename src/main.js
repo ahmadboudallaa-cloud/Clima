@@ -18,10 +18,12 @@ const hourName = document.getElementById("hourName");
 let timeZone = "";
 let dateFormat = "";
 const villeSauvgarde = localStorage.getItem("villeChoisie");
-const humidity = document.getElementById('humidityVal')
-const humidityBar = document.getElementById('humidityBar')
-const windVal = document.getElementById('windVal')
-const pressureVal = document.getElementById('pressureVal')
+const humidity = document.getElementById("humidityVal");
+const humidityBar = document.getElementById("humidityBar");
+const windVal = document.getElementById("windVal");
+const pressureVal = document.getElementById("pressureVal");
+const daysContainer = document.getElementById("daysContainer")
+// const carteDays = creerCarte() 
 
 const afficherHeure = (timeZone) => {
   const maintenant = new Date();
@@ -36,7 +38,79 @@ const afficherHeure = (timeZone) => {
   hourName.textContent = heure;
 };
 
-function affichageMeteo() {
+
+function creerCarte(days , month , icone , genre ,maxMeteo , minMeteo) {
+
+  const divCarte = document.createElement("div");
+  divCarte.classList.add(
+    "col-span-2",
+    "sm:col-span-1",
+    "group",
+    "flex",
+    "flex-col",
+    "items-center",
+    "justify-between",
+    "p-5",
+    "rounded-3xl",
+    "bg-slateGray-900/95",
+    "border",
+    "border-slate-200/60",
+    "dark:border-slate-700/50",
+    "shadow-xs",
+    "backdrop-blur-md",
+    "transition-all",
+    "duration-300",
+    "hover:-translate-y-1",
+    "hover:bg-white",
+    "dark:hover:bg-slate-800",
+    "cursor-pointer",
+  );
+  const spanDay = document.createElement("span");
+  spanDay.classList.add(
+    "text-xs",
+    "font-semibold",
+    "uppercase",
+    "tracking-wider",
+    "text-slate-700",
+    "dark:text-slate-200",
+  );
+  spanDay.textContent = `${days}`
+  const spanMonth = document.createElement("span");
+  spanMonth.classList.add("text-xs", "text-slate-400", "mt-0.5");
+  spanMonth.textContent = `${month}`
+  const iconeMeteoDay = document.createElement("p");
+  iconeMeteoDay.textContent = `${icone}`
+  const genreMeteo = document.createElement("p");
+  genreMeteo.classList.add(
+    "text-xs",
+    "font-medium",
+    "text-slate-500",
+    "dark:text-slate-400",
+    "mb-2",
+  );
+
+  genreMeteo.textContent = `${genre}`
+  
+
+  const divMaxMinMeteo = document.createElement("div");
+  divMaxMinMeteo.classList.add("flex", "items-center", "gap-2", "text-sm");
+  const spanMax = document.createElement("span");
+  spanMax.classList.add("font-bold", "text-amberSolar-400");
+  spanMax.textContent = `${maxMeteo}`
+  const spanFleche = document.createElement("span");
+  spanFleche.classList.add("text-slate-400");
+  spanFleche.textContent = "/"
+  const spanMin = document.createElement("span");
+  spanMin.classList.add("font-medium", "text-slate-400");
+spanMin.textContent = `${minMeteo}`
+  divMaxMinMeteo.append(spanMax , spanFleche , spanMin)
+  divCarte.append(spanDay , spanMonth , iconeMeteoDay,genreMeteo ,divMaxMinMeteo)
+
+  return divCarte
+}
+
+
+async function affichageMeteo() {
   let ville = recherche.value.trim();
 
   if (!ville) {
@@ -89,12 +163,11 @@ function affichageMeteo() {
         const sunriseTime1 = data.daily.sunrise[0].split("T")[1];
         const sunsetTime2 = data.daily.sunset[0].split("T")[1];
 
-       humidity.textContent = `${data.current.relative_humidity_2m}%`
-       humidityBar.style.width = `${data.current.relative_humidity_2m}%`
-       windVal.textContent = `${data.current.wind_speed_10m}`;
+        humidity.textContent = `${data.current.relative_humidity_2m}%`;
+        humidityBar.style.width = `${data.current.relative_humidity_2m}%`;
+        windVal.textContent = `${data.current.wind_speed_10m}`;
 
-
-pressureVal.textContent = `${data.current.surface_pressure}`
+        pressureVal.textContent = `${data.current.surface_pressure}`;
         sunriseTime.textContent = `${sunriseTime1}`;
         sunsetTime.textContent = `${sunsetTime2}`;
         const date = data.current.time.split("T")[0];
@@ -108,6 +181,18 @@ pressureVal.textContent = `${data.current.surface_pressure}`
 
         dateName.textContent = `${dateFormat}`;
         afficherHeure(timeZone);
+
+        
+
+     const carteDay = creerCarte(days , month , icone , genre ,maxMeteo , minMeteo)
+
+
+
+
+
+
+
+
       });
   }
 
@@ -128,62 +213,79 @@ setInterval(() => {
   }
 }, 1000);
 
+// function creerCarte() {
 
+//   const divCarte = document.createElement("div");
+//   divCarte.classList.add(
+//     "col-span-2",
+//     "sm:col-span-1",
+//     "group",
+//     "flex",
+//     "flex-col",
+//     "items-center",
+//     "justify-between",
+//     "p-5",
+//     "rounded-3xl",
+//     "bg-slateGray-900/95",
+//     "border",
+//     "border-slate-200/60",
+//     "dark:border-slate-700/50",
+//     "shadow-xs",
+//     "backdrop-blur-md",
+//     "transition-all",
+//     "duration-300",
+//     "hover:-translate-y-1",
+//     "hover:bg-white",
+//     "dark:hover:bg-slate-800",
+//     "cursor-pointer",
+//   );
+//   const spanDay = document.createElement("span");
+//   spanDay.classList.add(
+//     "text-xs",
+//     "font-semibold",
+//     "uppercase",
+//     "tracking-wider",
+//     "text-slate-700",
+//     "dark:text-slate-200",
+//   );
+//   const spanMonth = document.createElement("span");
+//   spanMonth.classList.add("text-xs", "text-slate-400", "mt-0.5");
+//   spanMonth.textContent = "ndjnvf"
+//   const iconeMeteoDay = document.createElement("p");
+//   iconeMeteoDay.textContent = ",njfhdv"
+//   const genreMeteo = document.createElement("p");
+//   genreMeteo.classList.add(
+//     "text-xs",
+//     "font-medium",
+//     "text-slate-500",
+//     "dark:text-slate-400",
+//     "mb-2",
+//   );
+  
 
+//   const divMaxMinMeteo = document.createElement("div");
+//   divMaxMinMeteo.classList.add("flex", "items-center", "gap-2", "text-sm");
+//   const spanMax = document.createElement("span");
+//   spanMax.classList.add("font-bold", "text-amberSolar-400");
+//   spanMax.textContent = `${data.daily.temperature_2m_max[1]}`
+//   const spanFleche = document.createElement("span");
+//   spanFleche.classList.add("text-slate-400");
+//   spanFleche.textContent = "/"
+//   const spanMin = document.createElement("span");
+//   spanMin.classList.add("font-medium", "text-slate-400");
+// spanMin.textContent = `${data.daily.temperature_2m_[1]}`
+//   divMaxMinMeteo.append(spanMax , spanFleche , spanMin)
+//   divCarte.append(spanDay , spanMonth , iconeMeteoDay,genreMeteo ,divMaxMinMeteo)
 
-
-
-// const previsions = document.getElementById("previsions");
-
-// // Vider les anciennes prévisions
-// previsions.innerHTML = "";
-
-// // Parcourir les autres jours (on commence à 1 pour ignorer aujourd'hui)
-// for (let i = 1; i < data.daily.time.length; i++) {
-
-//     // Créer une carte
-//     const carte = document.createElement("div");
-//     carte.classList.add(
-//         "bg-white",
-//         "rounded-2xl",
-//         "p-5",
-//         "shadow-sm",
-//         "border",
-//         "border-skyBlue-100"
-//     );
-
-//     // Récupérer la date
-//     const date = new Date(data.daily.time[i] + "T00:00:00");
-
-//     const jour = date.toLocaleDateString("fr-FR", {
-//         weekday: "long",
-//         day: "numeric",
-//         month: "long"
-//     });
-
-//     // Récupérer le code météo
-//     const codeMeteo = data.daily.weather_code[i];
-
-//     // Créer les éléments HTML
-//     const nomJour = document.createElement("h3");
-//     nomJour.textContent = jour;
-
-//     const icone = document.createElement("p");
-//     icone.classList.add("text-4xl", "my-3");
-//     icone.textContent = WEATHER_CODES[codeMeteo].icon;
-
-//     const condition = document.createElement("p");
-//     condition.textContent = WEATHER_CODES[codeMeteo].label;
-
-//     const temperature = document.createElement("p");
-//     temperature.classList.add("mt-3", "font-bold");
-
-//     temperature.textContent =
-//         `${data.daily.temperature_2m_max[i]}° / ${data.daily.temperature_2m_min[i]}°`;
-
-//     // Ajouter les éléments dans la carte
-//     carte.append(nomJour, icone, condition, temperature);
-
-//     // Ajouter la carte dans la div principale
-//     previsions.append(carte);
+//   return divCarte
 // }
+
+
+
+
+
+
+
+
+
+
