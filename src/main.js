@@ -1,6 +1,7 @@
 import { WEATHER_CODES } from "./../data/icones";
 const recherche = document.getElementById("cityInput");
 const buttonSearch = document.getElementById("buttonSearch");
+const btnRetry = document.getElementById('btnRetry')
 const villesMar = await fetch("./data/ville.json");
 const villes = await villesMar.json();
 const message = document.getElementById("toastMessage");
@@ -22,8 +23,11 @@ const humidity = document.getElementById("humidityVal");
 const humidityBar = document.getElementById("humidityBar");
 const windVal = document.getElementById("windVal");
 const pressureVal = document.getElementById("pressureVal");
-const daysContainer = document.getElementById("daysContainer")
-// const carteDays = creerCarte() 
+const daysContainer = document.getElementById("daysContainer");
+const loading = document.getElementById("loading");
+const weatherContent = document.getElementById("weatherContent");
+const errorContent = document.getElementById("errorContent");
+// const carteDays = creerCarte()
 
 const afficherHeure = (timeZone) => {
   const maintenant = new Date();
@@ -38,9 +42,19 @@ const afficherHeure = (timeZone) => {
   hourName.textContent = heure;
 };
 
+function afficherChargement() {
+  loading.classList.remove("hidden");
+  weatherContent.classList.add("hidden");
+  errorContent.classList.add("hidden");
+}
 
-function creerCarte(days , month , icone , genre ,maxMeteo , minMeteo) {
-
+function afficherError(error) {
+  loading.classList.add("hidden");
+  weatherContent.classList.add("hidden");
+  errorContent.classList.remove("hidden");
+  document.getElementById("errorMessage").textContent = error;
+}
+function creerCarte(days, month, icone, genre, maxMeteo, minMeteo) {
   const divCarte = document.createElement("div");
   divCarte.classList.add(
     "col-span-2",
@@ -74,12 +88,13 @@ function creerCarte(days , month , icone , genre ,maxMeteo , minMeteo) {
     "text-slate-700",
     "dark:text-slate-200",
   );
-  spanDay.textContent = `${days}`
+  spanDay.textContent = `${days}`;
   const spanMonth = document.createElement("span");
   spanMonth.classList.add("text-xs", "text-slate-400", "mt-0.5");
-  spanMonth.textContent = `${month}`
+  spanMonth.textContent = `${month}`;
   const iconeMeteoDay = document.createElement("p");
-  iconeMeteoDay.textContent = `${icone}`
+  iconeMeteoDay.classList.add("text-4xl");
+  iconeMeteoDay.textContent = `${icone}`;
   const genreMeteo = document.createElement("p");
   genreMeteo.classList.add(
     "text-xs",
@@ -89,33 +104,39 @@ function creerCarte(days , month , icone , genre ,maxMeteo , minMeteo) {
     "mb-2",
   );
 
-  genreMeteo.textContent = `${genre}`
-  
+  genreMeteo.textContent = `${genre}`;
 
   const divMaxMinMeteo = document.createElement("div");
   divMaxMinMeteo.classList.add("flex", "items-center", "gap-2", "text-sm");
   const spanMax = document.createElement("span");
   spanMax.classList.add("font-bold", "text-amberSolar-400");
-  spanMax.textContent = `${maxMeteo}`
+  spanMax.textContent = `${maxMeteo}`;
   const spanFleche = document.createElement("span");
   spanFleche.classList.add("text-slate-400");
-  spanFleche.textContent = "/"
+  spanFleche.textContent = "/";
   const spanMin = document.createElement("span");
   spanMin.classList.add("font-medium", "text-slate-400");
-spanMin.textContent = `${minMeteo}`
-  divMaxMinMeteo.append(spanMax , spanFleche , spanMin)
-  divCarte.append(spanDay , spanMonth , iconeMeteoDay,genreMeteo ,divMaxMinMeteo)
+  spanMin.textContent = `${minMeteo}`;
+  divMaxMinMeteo.append(spanMax, spanFleche, spanMin);
+  divCarte.append(
+    spanDay,
+    spanMonth,
+    iconeMeteoDay,
+    genreMeteo,
+    divMaxMinMeteo,
+  );
 
-  return divCarte
+  return divCarte;
 }
 
-
-async function affichageMeteo() {
+function affichageMeteo() {
+ 
   let ville = recherche.value.trim();
 
   if (!ville) {
     divMessage.classList.remove("hidden");
     message.textContent = "Veiller entrer une ville";
+    
     return;
   }
 
@@ -132,10 +153,19 @@ async function affichageMeteo() {
     setTimeout(() => {
       divMessage.classList.add("hidden");
     }, 2000);
-
+ afficherChargement();
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${villeChoisie.lat}&longitude=${villeChoisie.lng}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,surface_pressure&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset&forecast_days=6&timezone=auto`;
-    fetch(url)
-      .then((response) => response.json())
+   Promise.all([
+  fetch(url),
+  new Promise((resolve) => setTimeout(resolve, 1000))
+])
+      .then(([response]) => {
+         if (!response.ok) {
+      throw new Error(response.status);
+    }
+
+    return response.json();
+      })
       .then((data) => {
         ciluce.textContent = `${data.current.temperature_2m}${data.current_units.temperature_2m} `;
         localisation.textContent = `${villeChoisie.city}, ${villeChoisie.country} `;
@@ -181,18 +211,41 @@ async function affichageMeteo() {
 
         dateName.textContent = `${dateFormat}`;
         afficherHeure(timeZone);
+daysContainer.innerHTML = "";
+        for (let i = 1; i < data.daily.time.length; i++) {
+          const dateCarte = new Date(data.daily.time[i]);
 
-        
+          const days = dateCarte.toLocaleDateString("fr-FR", {
+            weekday: "long",
+          });
+          const month = dateCarte.toLocaleDateString("fr-FR", {
+            day: "numeric",
+            month: "long",
+          });
+          const icone = `${WEATHER_CODES[data.daily.weather_code[i]].icon}`;
+          const genre = `${WEATHER_CODES[data.daily.weather_code[i]].label}`;
+          const maxMeteo = `${data.daily.temperature_2m_max[i]}`;
+          const minMeteo = `${data.daily.temperature_2m_min[i]}`;
 
-     const carteDay = creerCarte(days , month , icone , genre ,maxMeteo , minMeteo)
+          const carteDay = creerCarte(
+            days,
+            month,
+            icone,
+            genre,
+            maxMeteo,
+            minMeteo,
+          );
 
+          
 
-
-
-
-
-
-
+          daysContainer.append(carteDay);
+        }
+        loading.classList.add("hidden");
+    weatherContent.classList.remove("hidden");
+      })
+      .catch((error) => {
+        console.error(error);
+        afficherError("Impossible de récupérer les données météo.");
       });
   }
 
@@ -204,6 +257,10 @@ buttonSearch.addEventListener("click", () => {
   affichageMeteo();
 });
 
+btnRetry.addEventListener("click",() =>{
+
+  affichageMeteo();
+})
 recherche.value = villeSauvgarde || "Rabat";
 affichageMeteo();
 
@@ -212,80 +269,3 @@ setInterval(() => {
     afficherHeure(timeZone);
   }
 }, 1000);
-
-// function creerCarte() {
-
-//   const divCarte = document.createElement("div");
-//   divCarte.classList.add(
-//     "col-span-2",
-//     "sm:col-span-1",
-//     "group",
-//     "flex",
-//     "flex-col",
-//     "items-center",
-//     "justify-between",
-//     "p-5",
-//     "rounded-3xl",
-//     "bg-slateGray-900/95",
-//     "border",
-//     "border-slate-200/60",
-//     "dark:border-slate-700/50",
-//     "shadow-xs",
-//     "backdrop-blur-md",
-//     "transition-all",
-//     "duration-300",
-//     "hover:-translate-y-1",
-//     "hover:bg-white",
-//     "dark:hover:bg-slate-800",
-//     "cursor-pointer",
-//   );
-//   const spanDay = document.createElement("span");
-//   spanDay.classList.add(
-//     "text-xs",
-//     "font-semibold",
-//     "uppercase",
-//     "tracking-wider",
-//     "text-slate-700",
-//     "dark:text-slate-200",
-//   );
-//   const spanMonth = document.createElement("span");
-//   spanMonth.classList.add("text-xs", "text-slate-400", "mt-0.5");
-//   spanMonth.textContent = "ndjnvf"
-//   const iconeMeteoDay = document.createElement("p");
-//   iconeMeteoDay.textContent = ",njfhdv"
-//   const genreMeteo = document.createElement("p");
-//   genreMeteo.classList.add(
-//     "text-xs",
-//     "font-medium",
-//     "text-slate-500",
-//     "dark:text-slate-400",
-//     "mb-2",
-//   );
-  
-
-//   const divMaxMinMeteo = document.createElement("div");
-//   divMaxMinMeteo.classList.add("flex", "items-center", "gap-2", "text-sm");
-//   const spanMax = document.createElement("span");
-//   spanMax.classList.add("font-bold", "text-amberSolar-400");
-//   spanMax.textContent = `${data.daily.temperature_2m_max[1]}`
-//   const spanFleche = document.createElement("span");
-//   spanFleche.classList.add("text-slate-400");
-//   spanFleche.textContent = "/"
-//   const spanMin = document.createElement("span");
-//   spanMin.classList.add("font-medium", "text-slate-400");
-// spanMin.textContent = `${data.daily.temperature_2m_[1]}`
-//   divMaxMinMeteo.append(spanMax , spanFleche , spanMin)
-//   divCarte.append(spanDay , spanMonth , iconeMeteoDay,genreMeteo ,divMaxMinMeteo)
-
-//   return divCarte
-// }
-
-
-
-
-
-
-
-
-
-
