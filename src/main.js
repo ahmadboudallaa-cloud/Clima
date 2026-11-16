@@ -1,6 +1,6 @@
 
 import "./style.css";
-import { WEATHER_CODES } from "./../data/icones";
+import { WEATHER_CODES } from "./data/icones";
 
 const recherche = document.getElementById("cityInput");
 const buttonSearch = document.getElementById("buttonSearch");
