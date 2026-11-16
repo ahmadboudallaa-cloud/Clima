@@ -1,8 +1,11 @@
+
+import "./style.css";
 import { WEATHER_CODES } from "./../data/icones";
+
 const recherche = document.getElementById("cityInput");
 const buttonSearch = document.getElementById("buttonSearch");
 const btnRetry = document.getElementById('btnRetry')
-const villesMar = await fetch("./data/ville.json");
+const villesMar = await fetch(`${import.meta.env.BASE_URL}data/ville.json`);
 const villes = await villesMar.json();
 const message = document.getElementById("toastMessage");
 const divMessage = document.getElementById("toast");
