@@ -133,10 +133,12 @@ function affichageMeteo() {
  
   let ville = recherche.value.trim();
 
-  if (!ville) {
+  if (ville === "") {
     divMessage.classList.remove("hidden");
     message.textContent = "Veiller entrer une ville";
-    
+     setTimeout(() => {
+      divMessage.classList.add("hidden");
+    }, 2000);
     return;
   }
 
@@ -147,17 +149,27 @@ function affichageMeteo() {
   if (villeChoisie === undefined) {
     divMessage.classList.remove("hidden");
     message.textContent = "Veiller entrer une ville marocain";
-    return;
-  } else {
-    divMessage.classList.remove("hidden");
-    setTimeout(() => {
+     setTimeout(() => {
       divMessage.classList.add("hidden");
     }, 2000);
+    return;
+  }else{
+    divMessage.classList.remove("hidden");
+    message.textContent = "Les données ont été mises à jour avec succès !" 
+     setTimeout(() => {
+      divMessage.classList.add("hidden");
+    }, 2000);
+ 
+  }
+  
+   
+     
  afficherChargement();
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${villeChoisie.lat}&longitude=${villeChoisie.lng}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,surface_pressure&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset&forecast_days=6&timezone=auto`;
    Promise.all([
   fetch(url),
-  new Promise((resolve) => setTimeout(resolve, 1000))
+  new Promise((resolve) => {setTimeout(resolve, 1000)
+  })
 ])
       .then(([response]) => {
          if (!response.ok) {
@@ -247,18 +259,19 @@ daysContainer.innerHTML = "";
         console.error(error);
         afficherError("Impossible de récupérer les données météo.");
       });
-  }
+  
 
   localStorage.setItem("villeChoisie", villeChoisie.city);
   recherche.value = "";
 }
 
 buttonSearch.addEventListener("click", () => {
+ 
   affichageMeteo();
 });
 
 btnRetry.addEventListener("click",() =>{
-
+ recherche.value = villeSauvgarde || "Rabat";
   affichageMeteo();
 })
 recherche.value = villeSauvgarde || "Rabat";
